@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+ <head> 
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /> 
+  
+  <title> 注册 </title> 
+  <link rel="stylesheet" href="style/css/base.css"  /> 
+  <link rel="stylesheet" href="style/css/login.css"  /> 
+
+  <script  type="text/javascript" src="style/js/jquery-1.7.1.min.js"></script> 
+
+
+  <style>
+	.verify {
+		width: 95px;
+		position: absolute;
+		right: 0;
+		top: 0px;
+		cursor: pointer;
+		height: 46px;
+		font-size: 14px;
+		text-align: center;
+		line-height: 46px;
+		background-color: rgb(50, 165, 231);
+		color: black;
+	  }
+  
+	  ::-webkit-scrollbar {
+		display: none;
+	  }
+	</style>
+  </head>
+  
+  <body>
+	<div id="content" class="content">
+	  <div class="banner-box">
+		<form id="mainForm" class="main-form" enctype="application/x-www-form-urlencoded" novalidate="novalidate">
+		  <div class="tab-title">
+			<a class="linkAGray" id="toAccountLogin" href="login.html">账号登录</a>
+			<span class="register-line"></span>
+			<a class="linkABlue" id="toVCodeLogin" href="register.html">账号注册</a>
+		  </div>
+		  <div id="errorMsg" class="tip-box visiblility-hidden">
+			<i class="err-ico"></i>
+			<span class="tip-font" id="tipMsg">请填写完整的注册信息</span>
+			<span id="closeErrorMsg" class="close-ico"></span>
+		  </div>
+		  <div class="normalInput fieldInput" id="username-box">
+			<input type="text" class="inp-focus" name="username" id="username"  maxlength="16" minlength="5" placeholder="用户名" autocomplete="off" onfocus="closeErrorMsg()" />
+			<span id="accountlength" style="color: #999;">输入5-16位字符</span>
+		</div>
+		  <div class="normalInput fieldInput">
+			<input type="password" class="inp-focus" name="password" id="password"maxlength="20" minlength="6" autocomplete="off" placeholder="密码" onfocus="closeErrorMsg()" />
+			<span id="accountlength2" style="color: #999;">输入6-20位字符</span>
+		</div>
+		  <div class="normalInput fieldInput">
+			<input type="password" class="inp-focus" name="confirmPassword" id="confirmPassword" maxlength="20" minlength="6"" autocomplete="off" placeholder="确认密码" onfocus="closeErrorMsg()" />
+			<span id="accountlength2" style="color: #999;">输入6-20位字符</span>
+		</div>
+		  <a id="register" class="fullBtnBlue">注册</a>
+		</form>
+	  </div>
+	</div>
+  
+	<script>
+	  $("#register").click(function() {
+		var username = $("#username").val();
+		var password = $("#password").val();
+		var confirmPassword = $("#confirmPassword").val();
+  
+		if (username == "" || password == "" || confirmPassword == "") {
+		  var obj = document.getElementById("errorMsg");
+		  $("#tipMsg").html("请填写完整的注册信息！");
+		  obj.setAttribute("class", "tip-box visiblility-show");
+		  return;
+		}
+  
+		if (password!= confirmPassword) {
+		  var obj = document.getElementById("errorMsg");
+		  $("#tipMsg").html("两次输入的密码不一致！");
+		  obj.setAttribute("class", "tip-box visiblility-show");
+		  return;
+		}
+  
+		// 可以添加用户名和密码的其他验证逻辑
+  
+		// 发送ajax请求
+		$.ajax({
+    type: 'POST',  // 请求方法，常见的有 GET 和 POST
+    url:'register.action',  // 后端接口的 URL 地址
+    data: 'username=' + username + '&password=' + password,  // 要发送给后端的数据，以键值对的形式拼接在字符串中
+    success: function(response) {  // 请求成功后的回调函数，处理后端返回的响应
+        // 在这里根据后端返回的结果进行相应的处理
+        console.log(response);
+    },
+    error: function(error) {  // 请求失败时的回调函数，处理错误情况
+        console.error(error);
+    }
+});
+  
+	  $("#closeErrorMsg").click(function() {
+		var obj = document.getElementById("errorMsg");
+		obj.setAttribute("class", "tip-box visiblility-hidden");
+	  });
+  
+	  function closeErrorMsg() {
+		var obj = document.getElementById("errorMsg");
+		obj.setAttribute("class", "tip-box visiblility-hidden");
+	  }
+	</script>
+  </body>
+</html>
